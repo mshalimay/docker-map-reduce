@@ -1,4 +1,9 @@
-# Section 1
+## Short description
+A map-reduce program to count different words in a set of documents deployed on a group of Docker containers (originally, 9 "mappers" and 1 "reducer").
+
+A small dataset of Stack Overflow question titles is provided in titles.tar.gz
+
+This was a mini-project for MPCS Distributed Systems course.
 
 ## Instructions to run application
 1) Start the Docker engine
@@ -34,11 +39,7 @@
 	- I did so to explicitly see the reducer container is waiting for the mapper containers and that even with all containers async, the map-reduce is achieved
 	- I am aware there could be a shorter version that achieved the same purpose
 
-# Section 2
-**Q: What is the advantage of using Docker for this computation?**
-- Mainly: horizontal scalability. This is a task that tends naturally to parallelized computation. Separating the tasks between many dockers can improve the time to achieve the computation
-- Coupled with the other benefits mentioned in part 1, this can accelerate the process from development to the final solution
-
+## Notes on synchronization
 **Q: How did you ensure that the reducer does not start combining results until all mappers have finished their computation? In 1-2 sentences, describe a different method to do this that does not make use of a shared file-system (e.g., if the mappers were all running on different nodes).**
 - I ensured by making the `reducer` loop until all the `i.json` files in the `count` folder were created. Since each `i.json` file is created once a `map.py` script finishs counting, the reducer will then sum and save the resulting sum of counts only when all mappers are finished
 - To do that using Docker, I created a shared-volume between the containers containing the `counts` folder, so that all containers are saving and looking to the same directory
